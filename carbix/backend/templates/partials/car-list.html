@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-between">
+
+    <section class="col-6">
+    
+        {% if messages %}
+        <ul class="messages" hx-get="{% url 'clear' %}" hx-trigger="load delay:3s">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    
+        {% if cars %}
+        
+            {% csrf_token %}
+            <form class="sortable list-group" hx-trigger="end" hx-post="{% url 'sort' %}" hx-target="#car-list">
+                <div class="htmx-indicator">Updating...</div>
+                {% for car in cars %}
+                <div>
+                    <input type="hidden" name="car_order" value="{{ car.pk }}" />
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        #{{car.order}} {{ car.car.name }}
+                        <span class="badge badge-danger badge-pill" 
+                            style="cursor: pointer;"
+                            hx-delete="{% url 'delete-car' car.pk %}"
+                            hx-target="#car-list"
+                            hx-confirm="Are you sure you wish to delete?">X</span>
+                    </li>
+                </div>
+            {% endfor %}
+            </form>
+        {% else %}
+            <p>You do not have any cars in your list</p>
+        {% endif %}
+    
+    </section>
+    
+    <section class="col-4 offset-1">
+        {% include 'partials/search.html' %}
+    </section>
+    </div>
+    
+    {% if request.method == 'POST' %}
+    <input type="text"
+        hx-swap-oob="true"
+        id="carname-input"
+        name="carname" 
+        class="form-control-sm mr-2" 
+        placeholder="Enter a car" />
+    {% endif %}
