@@ -1,4 +1,4 @@
-# Carbix App: A Car CRUD App Using JQUERY, Sortable.js, BOOTSTRAP, and HTMX
+# Carbix App: A Car CRUD App Using Django, JQUERY, Sortable.js, BOOTSTRAP, and HTMX
 This is an App that let's you create and rearrange the list of available cars.
 
 # Requirements
